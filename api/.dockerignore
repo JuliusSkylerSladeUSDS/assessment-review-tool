@@ -3,4 +3,5 @@ node_modules/
 *.md
 
 Dockerfile
-Dockerfile.dev
+Dockerfile.compose
+.dockerignore

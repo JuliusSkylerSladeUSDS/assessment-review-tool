@@ -1,23 +1,22 @@
-FROM node:12.16.2 AS builder
-RUN curl -o- -L https://yarnpkg.com/install.sh | bash
+# Match the Node version used by the prod/staging GitHub Workflow.
+# See: /.github/workflows
+FROM node:12.16.2
 
-# set working directory
+ENV APP_DIR=/opt/react_app
 
-ENV WKDIR /opt/react_app
-WORKDIR ${WKDIR}
+WORKDIR ${APP_DIR}
 
+RUN npm -g install react-scripts@3.4.1
+RUN npm -g install serve
 
-# RUN npm install -g node-sass
-RUN npm -g i react-scripts@3.4.1
-RUN npm -g i serve
-
+# Copy Node package files first to utilize layer caching.
 COPY package*.json .
 
-RUN npm ci
+RUN npm clean-install
 
-ENV PATH ${WKDIR}/node_modules/.bin:$PATH
-
+ENV PATH ${APP_DIR}/node_modules/.bin:$PATH
 
 COPY . .
 
+# TODO: do whatever GitHub actions does to build and run this.
 CMD ["npm", "start"]

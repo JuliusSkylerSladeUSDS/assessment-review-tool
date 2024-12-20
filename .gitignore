@@ -32,4 +32,4 @@ api/coverage
 api/tmp
 api/logs
 
-frontend/src/styles/app.css
+frontend/src/styles/App.css
