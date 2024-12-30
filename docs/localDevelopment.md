@@ -30,3 +30,15 @@ Clean up:
 docker volume rm $(docker volume ls -q) # Removes local docker volumes
 docker rm -f $(docker ps -aq) # Removes local docker containers
 ```
+
+### GitHub Codespace
+This repo's branch protection rules require that all commits be signed. If you're committing
+from the `git` CLI in the remote-connected Visual Studio Code terminal, this wont work out of
+the box. You need to run:
+
+```bash
+export GPG_TTY=$(tty)
+```
+
+in your VSCode terminal before GPG commit signing will work. This may or may not be necessary
+if you're using VSCode's UI git features.
