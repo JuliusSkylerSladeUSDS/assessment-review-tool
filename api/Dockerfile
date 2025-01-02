@@ -1,15 +1,21 @@
 FROM node:14.21.3-alpine
 
-WORKDIR /app
+ENV APP_DIR=/opt/node_app/app \
+    PORT=9000
 
-COPY package.json .
-COPY package-lock.json .
+RUN npm install -g typescript
 
-RUN npm install
+WORKDIR $APP_DIR
 
-COPY . ./app
+COPY package*.json .
 
-ENV PORT=9000
-EXPOSE 9000
+RUN npm clean-install
 
-CMD ["npm", "start"]
+COPY . .
+
+RUN npm run build
+WORKDIR $APP_DIR/build
+
+EXPOSE $PORT
+
+CMD ["node", "server.js"]
